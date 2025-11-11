@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "announcement_bar": {
@@ -9,11 +18,16 @@
     },
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "logo_width": 160,
+        "menu": "main-menu",
+        "color_scheme": "background-1"
+      }
     },
     "hero": {
       "type": "hero-sloe-fit",
       "settings": {
+        "image": "shopify://shop_images/sloe_side_profile_3.jpg",
         "heading": "YOUR COMPLETE FITNESS ECOSYSTEM.",
         "text": "Premium, trusted supplements and a personal AI coach. Stop guessing, start achieving.",
         "button_label_1": "Shop The Starter Stack",
@@ -26,18 +40,16 @@
       "type": "featured-collection",
       "settings": {
         "title": "THE FOUNDATION.",
+        "heading_size": "h2",
         "collection": "all",
         "products_to_show": 3,
-        "columns_desktop": 3
+        "columns_desktop": 3,
+        "show_view_all": true,
+        "color_scheme": "background-1"
       }
     },
     "stack_builder": {
       "type": "stack-builder",
-      "settings": {
-        "title": "FIND YOUR PERFECT STACK.",
-        "description": "The Sloe Fit AI Coach builds a plan unique to you. What are you training for?",
-        "show_waitlist_link": true
-      },
       "blocks": {
         "goal_1": {
           "type": "goal",
@@ -74,41 +86,46 @@
         "goal_1",
         "goal_2",
         "goal_3"
-      ]
+      ],
+      "settings": {
+        "title": "FIND YOUR PERFECT STACK.",
+        "description": "The Sloe Fit AI Coach builds a plan unique to you. What are you training for?",
+        "show_waitlist_link": true
+      }
     },
     "trust_badges": {
       "type": "trust-badges",
-      "settings": {
-        "title": "FITNESS YOU CAN TRUST.",
-        "description": "We were tired of confusing labels and mystery ingredients. We're founded on transparency."
-      },
       "blocks": {
         "badge_1": {
           "type": "badge",
           "settings": {
             "title": "Third-Party Tested",
-            "description": "Every batch is tested for purity, potency, and safety."
+            "description": "Every batch is tested for purity, potency, and safety.",
+            "icon_svg": ""
           }
         },
         "badge_2": {
           "type": "badge",
           "settings": {
             "title": "Transparently Sourced",
-            "description": "We show you exactly where our ingredients come from. No blends."
+            "description": "We show you exactly where our ingredients come from. No blends.",
+            "icon_svg": ""
           }
         },
         "badge_3": {
           "type": "badge",
           "settings": {
             "title": "No Banned Substances",
-            "description": "Certified safe for all athletes. Your health is our priority."
+            "description": "Certified safe for all athletes. Your health is our priority.",
+            "icon_svg": ""
           }
         },
         "badge_4": {
           "type": "badge",
           "settings": {
             "title": "Made in the USA",
-            "description": "All products are manufactured in a cGMP-certified facility in the USA."
+            "description": "All products are manufactured in a cGMP-certified facility in the USA.",
+            "icon_svg": ""
           }
         }
       },
@@ -117,20 +134,22 @@
         "badge_2",
         "badge_3",
         "badge_4"
-      ]
+      ],
+      "settings": {
+        "title": "FITNESS YOU CAN TRUST.",
+        "description": "We were tired of confusing labels and mystery ingredients. We're founded on transparency."
+      }
     },
     "testimonials": {
       "type": "testimonials",
-      "settings": {
-        "title": "DON'T JUST TAKE OUR WORD."
-      },
       "blocks": {
         "testimonial_1": {
           "type": "testimonial",
           "settings": {
             "quote": "The Sloe Fit Pre-Workout is the only one I've tried that gives me a clean boost with zero crash. Plus, I trust the ingredients.",
             "name": "Alex M.",
-            "rating": 5
+            "rating": 5,
+            "badge": "Verified Buyer"
           }
         },
         "testimonial_2": {
@@ -138,7 +157,8 @@
           "settings": {
             "quote": "As a beginner, I was so lost. The 'Starter Stack' was perfect. I'm already seeing results and can't wait for the AI coach!",
             "name": "Jessica L.",
-            "rating": 5
+            "rating": 5,
+            "badge": "Verified Buyer"
           }
         },
         "testimonial_3": {
@@ -146,7 +166,8 @@
           "settings": {
             "quote": "Finally, a whey protein that mixes perfectly and doesn't taste artificial. The transparency is a game-changer. 10/10.",
             "name": "David K.",
-            "rating": 5
+            "rating": 5,
+            "badge": "Verified Buyer"
           }
         }
       },
@@ -154,19 +175,24 @@
         "testimonial_1",
         "testimonial_2",
         "testimonial_3"
-      ]
+      ],
+      "settings": {
+        "title": "DON'T JUST TAKE OUR WORD."
+      }
     },
     "value_offer_signup": {
       "type": "value-offer-signup",
       "settings": {
         "title": "GET THE GUIDE.",
         "description": "Join the list to get a free 5-day beginner's workout plan, 10% off your first order, and early access to the AI Coach.",
+        "placeholder": "Enter your email",
         "button_label": "Get My Plan"
       }
     },
     "footer": {
       "type": "footer",
       "settings": {
+        "color_scheme": "background-1",
         "show_social": true
       }
     }
@@ -183,4 +209,3 @@
     "footer"
   ]
 }
-
