@@ -104,7 +104,7 @@
     {%- if block.type == 'goal' -%}
       {%- if first == false -%},{%- endif -%}
       {%- assign first = false -%}
-      "{{ block.settings.goal_id | default: 'goal_' | append: forloop.index }}": {
+      "{{ block.settings.goal_id }}": {
         "title": {{ block.settings.stack_title | default: 'Stack' | json }},
         "products": [
           {%- if block.settings.collection != blank -%}
