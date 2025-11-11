@@ -81,12 +81,9 @@
 
           <div class="stack-builder__footer">
             <p class="stack-builder__total" id="stack-total-{{ section.id }}">Total: <span id="stack-total-amount-{{ section.id }}">$0.00</span></p>
-            <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="stack-builder__form">
-              <input type="hidden" name="items[]" id="stack-items-{{ section.id }}" value="">
-              <button type="submit" class="button button--sloe-fit button--primary">
-                Add Stack to Cart
-              </button>
-            </form>
+            <button type="button" id="add-stack-{{ section.id }}" class="button button--sloe-fit button--primary">
+              Add Stack to Cart
+            </button>
           </div>
 
           {%- if section.settings.show_waitlist_link -%}
@@ -100,6 +97,41 @@
   </div>
 </div>
 
+{%- comment -%} Embed goal/product data for client-side rendering {%- endcomment -%}
+<script type="application/json" id="stack-data-{{ section.id }}">
+{
+  {%- assign first = true -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'goal' -%}
+      {%- if first == false -%},{%- endif -%}
+      {%- assign first = false -%}
+      "{{ block.settings.goal_id | default: 'goal_' | append: forloop.index }}": {
+        "title": {{ block.settings.stack_title | default: 'Stack' | json }},
+        "products": [
+          {%- assign handles = block.settings.products | default: '' | split: ',' -%}
+          {%- assign pfirst = true -%}
+          {%- for h in handles -%}
+            {%- assign handle = h | strip -%}
+            {%- assign p = all_products[handle] -%}
+            {%- if p -%}
+              {%- assign v = p.selected_or_first_available_variant -%}
+              {%- if pfirst == false -%},{%- endif -%}
+              {%- assign pfirst = false -%}
+              {
+                "variantId": {{ v.id | json }},
+                "priceCents": {{ v.price | times: 100 | divided_by: 100 | round: 0 }},
+                "title": {{ p.title | json }},
+                "image": {{ p.featured_media | image_url: width: 200 | json }}
+              }
+            {%- endif -%}
+          {%- endfor -%}
+        ]
+      }
+    {%- endif -%}
+  {%- endfor -%}
+}
+</script>
+
 <script>
   (function() {
     const stackBuilder = document.getElementById('stack-builder-{{ section.id }}');
@@ -109,39 +141,84 @@
     const stackTitle = document.getElementById('stack-title-{{ section.id }}');
     const stackProducts = document.getElementById('stack-products-{{ section.id }}');
     const stackTotal = document.getElementById('stack-total-amount-{{ section.id }}');
-    const stackItemsInput = document.getElementById('stack-items-{{ section.id }}');
+    const addStackBtn = document.getElementById('add-stack-{{ section.id }}');
+    const dataEl = document.getElementById('stack-data-{{ section.id }}');
+    const stackData = dataEl ? JSON.parse(dataEl.textContent) : {};
+    const currencyCode = '{{ shop.currency }}';
+
+    // Determine default goal id
+    let currentGoalId = null;
+    if (goals.length) {
+      currentGoalId = goals[0].dataset.goalId;
+      if (!stackData[currentGoalId]) {
+        // fall back to first key in data
+        currentGoalId = Object.keys(stackData)[0] || null;
+      }
+    }
+
+    function formatMoneyFromCents(cents) {
+      try {
+        if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
+          return window.Shopify.formatMoney(cents, window.Shopify.currency && window.Shopify.currency.active);
+        }
+      } catch (e) {}
+      return (cents / 100).toFixed(2) + ' ' + currencyCode;
+    }
+
+    function renderGoal(goalId) {
+      const goal = stackData[goalId];
+      if (!goal) return;
+      // Update title
+      if (stackTitle) stackTitle.textContent = goal.title || '';
+      // Render products
+      let html = '';
+      let totalCents = 0;
+      if (Array.isArray(goal.products) && goal.products.length) {
+        goal.products.forEach((p) => {
+          totalCents += (p.priceCents || 0);
+          html += `\n<div class="stack-builder__product-item">\n  ${p.image ? `<img src="${p.image}" alt="${p.title || ''}" class="stack-builder__product-image" loading="lazy">` : ''}\n  <div class="stack-builder__product-info">\n    <p class="stack-builder__product-name">${p.title || ''}</p>\n    <p class="stack-builder__product-price">${formatMoneyFromCents(p.priceCents || 0)}</p>\n  </div>\n</div>`;
+        });
+      } else {
+        html = `\n<div class="stack-builder__product-item">\n  <div class="stack-builder__product-image" style="width:100px;height:100px;background:rgba(255,255,255,.06);border-radius:.4rem;"></div>\n  <div class="stack-builder__product-info">\n    <p class="stack-builder__product-name">Add products to this goal</p>\n    <p class="stack-builder__product-price">Use product handles in the section settings</p>\n  </div>\n</div>`;
+      }
+      if (stackProducts) stackProducts.innerHTML = html;
+      if (stackTotal) stackTotal.textContent = formatMoneyFromCents(totalCents);
+    }
 
     goals.forEach(goal => {
       goal.addEventListener('click', function() {
-        // Remove active class from all goals
         goals.forEach(g => g.classList.remove('stack-builder__goal--active'));
-        // Add active class to clicked goal
         this.classList.add('stack-builder__goal--active');
-
-        // Update stack title
-        if (stackTitle) {
-          stackTitle.textContent = this.dataset.stackTitle;
-        }
-
-        // Update products
-        if (stackProducts && this.dataset.products) {
-          const productHandles = this.dataset.products.split(',');
-          let html = '';
-          let total = 0;
-          let items = [];
-
-          productHandles.forEach(handle => {
-            handle = handle.trim();
-            {%- comment -%} This would need to be populated with actual product data via AJAX or Liquid {%- endcomment -%}
-            // For now, we'll use a placeholder approach
-          });
-
-          if (stackProducts) stackProducts.innerHTML = html;
-          if (stackTotal) stackTotal.textContent = '$' + total.toFixed(2);
-          if (stackItemsInput) stackItemsInput.value = JSON.stringify(items);
-        }
+        currentGoalId = this.dataset.goalId;
+        renderGoal(currentGoalId);
       });
     });
+
+    addStackBtn && addStackBtn.addEventListener('click', async () => {
+      const goal = stackData[currentGoalId];
+      if (!goal || !goal.products || !goal.products.length) return;
+      const items = goal.products.map(p => ({ id: p.variantId, quantity: 1 }));
+      try {
+        const res = await fetch(window.routes.cart_add_url + '.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items })
+        });
+        if (res.ok) {
+          // Option: redirect to cart or update cart count
+          window.location.href = window.routes.cart_url;
+        } else {
+          alert('Unable to add items to cart.');
+        }
+      } catch (e) {
+        alert('Unable to add items to cart.');
+      }
+    });
+
+    // Initial render
+    if (currentGoalId) renderGoal(currentGoalId);
+
+    // Legacy events removed; handled above
   })();
 </script>
 
