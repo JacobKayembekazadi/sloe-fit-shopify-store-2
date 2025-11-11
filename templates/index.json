@@ -58,7 +58,7 @@
             "description": "Maximize strength and hypertrophy.",
             "goal_id": "build_muscle",
             "stack_title": "The Muscle Stack",
-            "collection": ""
+            "collection": "shredd-collection"
           }
         },
         "goal_2": {
@@ -68,7 +68,7 @@
             "description": "Sustainable caloric deficit and nutrition.",
             "goal_id": "lose_fat",
             "stack_title": "The Fat Loss Stack",
-            "collection": ""
+            "collection": "pieces-collection"
           }
         },
         "goal_3": {
