@@ -1,0 +1,100 @@
+{%- comment -%}
+  Value Offer Signup Section
+  Location: sections/value-offer-signup.liquid
+  Purpose: Newsletter signup with value proposition
+{%- endcomment -%}
+
+<div class="value-offer-signup" style="background-color: var(--brand-accent);">
+  <div class="page-width">
+    <div class="value-offer-signup__content">
+      <h2 class="value-offer-signup__title brand-heading" style="color: var(--brand-dark);">
+        {{ section.settings.title | default: "GET THE GUIDE." | escape }}
+      </h2>
+      {%- if section.settings.description != blank -%}
+        <p class="value-offer-signup__description" style="color: var(--brand-dark);">
+          {{ section.settings.description }}
+        </p>
+      {%- endif -%}
+      
+      {% form 'customer', class: 'value-offer-signup__form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="value-offer-signup__form-wrapper">
+          <div class="value-offer-signup__input-wrapper">
+            <input
+              type="email"
+              name="contact[email]"
+              id="NewsletterForm--{{ section.id }}"
+              class="value-offer-signup__input"
+              value="{{ form.email }}"
+              aria-required="true"
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="email"
+              placeholder="{{ section.settings.placeholder | default: 'Enter your email' }}"
+              {% if form.errors %}
+                autofocus
+                aria-invalid="true"
+                aria-describedby="Newsletter-error--{{ section.id }}"
+              {% elsif form.posted_successfully? %}
+                aria-describedby="Newsletter-success--{{ section.id }}"
+              {% endif %}
+              required
+            >
+          </div>
+          <button type="submit" class="button button--sloe-fit button--dark" name="commit" aria-label="{{ section.settings.button_label | default: 'Get My Plan' }}">
+            {{ section.settings.button_label | default: "Get My Plan" | escape }}
+          </button>
+        </div>
+        {%- if form.errors -%}
+          <small class="value-offer-signup__message value-offer-signup__message--error" id="Newsletter-error--{{ section.id }}">
+            {% render 'icon-error' %}{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+          </small>
+        {%- endif -%}
+        {%- if form.posted_successfully? -%}
+          <h3 class="value-offer-signup__message value-offer-signup__message--success" id="Newsletter-success--{{ section.id }}" tabindex="-1" autofocus>
+            {% render 'icon-success' %}{{ 'newsletter.success' | t }}
+          </h3>
+        {%- endif -%}
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Value Offer Signup",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "GET THE GUIDE.",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "default": "Join the list to get a free 5-day beginner's workout plan, 10% off your first order, and early access to the AI Coach.",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "default": "Enter your email",
+      "label": "Email placeholder"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Get My Plan",
+      "label": "Button label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Value Offer Signup"
+    }
+  ]
+}
+{% endschema %}
+

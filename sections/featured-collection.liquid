@@ -1,0 +1,177 @@
+{%- comment -%}
+  Featured Collection Section
+  Location: sections/featured-collection.liquid
+  Purpose: Display a grid of products from a selected collection
+  This is a section file - it can be added/removed/reordered in the theme editor
+{%- endcomment -%}
+
+{%- liquid
+  assign products_to_display = section.settings.products_to_show
+  assign collection = collections[section.settings.collection]
+-%}
+
+<div class="featured-collection color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    {%- unless section.settings.title == blank -%}
+      <div class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin">
+        <h2 class="featured-collection__heading {{ section.settings.heading_size }}" id="FeaturedCollection-{{ section.id }}">
+          {{ section.settings.title | escape }}
+        </h2>
+        {%- if section.settings.show_view_all and collection.products_count > products_to_display -%}
+          <a href="{{ collection.url }}" class="link underlined-link large-up-hide">
+            {{ 'sections.featured_collection.view_all' | t }}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endunless -%}
+
+    {%- if collection != blank and collection.products_count > 0 -%}
+      <div class="grid grid--2-col grid--3-col-tablet grid--{{ section.settings.columns_desktop }}-col-desktop">
+        {%- for product in collection.products limit: products_to_display -%}
+          <div class="grid__item">
+            {% render 'product-card', product: product %}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="grid grid--2-col grid--3-col-tablet grid--{{ section.settings.columns_desktop }}-col-desktop">
+        {%- for i in (1..products_to_display) -%}
+          <div class="grid__item">
+            <div class="card-wrapper">
+              <div class="card card--{{ settings.card_style }} color-{{ settings.card_color_scheme }} gradient">
+                <div class="card__media">
+                  <div class="media media--transparent media--hover-effect">
+                    {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                </div>
+                <div class="card__content">
+                  <div class="card__information">
+                    <h3 class="card__heading">
+                      <a role="link" aria-disabled="true">{{ 'onboarding.product_title' | t }}</a>
+                    </h3>
+                  </div>
+                  <div class="card__badge">
+                    <span class="badge price--on-sale">{{ 'products.product.on_sale' | t }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_view_all and collection.products_count > products_to_display -%}
+      <div class="center collection__view-all">
+        <a href="{{ collection.url }}" class="button" id="FeaturedCollection-{{ section.id }}-view-all">
+          {{ 'sections.featured_collection.view_all' | t }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Featured collection",
+      "label": "Heading",
+      "info": "Title displayed above the product grid"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ],
+      "default": "h1",
+      "label": "Heading size",
+      "info": "Choose the size of the heading text"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Select the collection to display products from"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 25,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show",
+      "info": "Number of products to display in the grid"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Number of columns on desktop",
+      "info": "How many product columns to show on large screens"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Show 'View all' button",
+      "info": "Display a button linking to the full collection page"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "Accent 1"
+        },
+        {
+          "value": "accent-2",
+          "label": "Accent 2"
+        },
+        {
+          "value": "background-1",
+          "label": "Background 1"
+        },
+        {
+          "value": "background-2",
+          "label": "Background 2"
+        },
+        {
+          "value": "inverse",
+          "label": "Inverse"
+        }
+      ],
+      "default": "background-1",
+      "label": "Color scheme",
+      "info": "Choose a color scheme for this section"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection"
+    }
+  ]
+}
+{% endschema %}
+

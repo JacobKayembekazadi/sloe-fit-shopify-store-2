@@ -1,0 +1,72 @@
+{%- comment -%}
+  Main Article Section
+  Location: sections/main-article.liquid
+  Purpose: Display blog article content
+  This is a section file - it can be added/removed/reordered in the theme editor
+{%- endcomment -%}
+
+<article class="article section-{{ section.id }}-padding">
+  <div class="page-width">
+    <header class="article__header">
+      <h1 class="article__title">
+        {{ article.title | escape }}
+      </h1>
+      {%- if section.settings.blog_show_date or section.settings.blog_show_author -%}
+        <div class="article__meta">
+          {%- if section.settings.blog_show_author -%}
+            <span class="article__author">{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+          {%- endif -%}
+          {%- if section.settings.blog_show_date -%}
+            <span class="article__date">{{ article.published_at | date: format: 'date' }}</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </header>
+
+    {%- if article.image -%}
+      <div class="article__image">
+        <img
+          srcset="{%- if article.image.width >= 375 -%}{{ article.image | image_url: width: 375 }} 375w,{%- endif -%}
+                  {%- if article.image.width >= 750 -%}{{ article.image | image_url: width: 750 }} 750w,{%- endif -%}
+                  {%- if article.image.width >= 1100 -%}{{ article.image | image_url: width: 1100 }} 1100w,{%- endif -%}
+                  {{ article.image | image_url }} {{ article.image.width }}w"
+          src="{{ article.image | image_url: width: 750 }}"
+          sizes="100vw"
+          alt="{{ article.image.alt | escape }}"
+          loading="lazy"
+          width="{{ article.image.width }}"
+          height="{{ article.image.height }}"
+        >
+      </div>
+    {%- endif -%}
+
+    <div class="article__content rte">
+      {{ article.content }}
+    </div>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Article",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "blog_show_date",
+      "default": true,
+      "label": "Show date",
+      "info": "Display the article publication date"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_author",
+      "default": true,
+      "label": "Show author",
+      "info": "Display the article author name"
+    }
+  ]
+}
+{% endschema %}
+

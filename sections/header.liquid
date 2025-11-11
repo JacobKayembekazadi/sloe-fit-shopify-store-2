@@ -1,0 +1,160 @@
+{%- comment -%}
+  Header Section
+  Location: sections/header.liquid
+  Purpose: Main site header with navigation, logo, and cart
+  This is a section file - it can be added/removed/reordered in the theme editor
+{%- endcomment -%}
+
+<header class="header-wrapper header-wrapper--sloe-fit" style="background-color: rgba(18, 18, 18, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: sticky; top: 0; z-index: 50;">
+  <div class="page-width">
+    <div class="header header--sloe-fit">
+      {%- if section.settings.logo != blank -%}
+        <a href="{{ routes.root_url }}" class="header__heading-link">
+          <img
+            srcset="{%- if section.settings.logo.width >= 165 -%}{{ section.settings.logo | image_url: width: 165 }} 165w,{%- endif -%}
+                    {%- if section.settings.logo.width >= 330 -%}{{ section.settings.logo | image_url: width: 330 }} 330w,{%- endif -%}
+                    {{ section.settings.logo | image_url }} {{ section.settings.logo.width }}w"
+            src="{{ section.settings.logo | image_url: width: 330 }}"
+            sizes="(min-width: 990px) 165px, (min-width: 750px) 165px, 150px"
+            alt="{{ section.settings.logo.alt | default: shop.name | escape }}"
+            class="header__heading-logo"
+            width="{{ section.settings.logo.width }}"
+            height="{{ section.settings.logo.height }}"
+            loading="eager"
+          >
+        </a>
+      {%- else -%}
+        <a href="{{ routes.root_url }}" class="header__heading-link header__heading-link--sloe-fit">
+          <span class="brand-heading">{{ shop.name | upcase }}</span>
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.menu != blank -%}
+        <nav class="header__inline-menu header__inline-menu--sloe-fit">
+          <ul class="list-menu list-menu--inline list-menu--sloe-fit" role="list">
+            {%- for link in section.settings.menu.links -%}
+              <li>
+                {%- if link.links != blank -%}
+                  <details-disclosure>
+                    <details>
+                      <summary class="header__menu-item header__menu-item--sloe-fit list-menu__item link focus-inset">
+                        <span>{{ link.title | escape }}</span>
+                        {% render 'icon-caret' %}
+                      </summary>
+                      <ul class="header__submenu list-menu motion-reduce" role="list">
+                        {%- for childlink in link.links -%}
+                          <li>
+                            <a href="{{ childlink.url }}" class="header__menu-item list-menu__item link link--text focus-inset"{% if childlink.current %} aria-current="page"{% endif %}>
+                              {{ childlink.title | escape }}
+                            </a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </details>
+                  </details-disclosure>
+                {%- else -%}
+                  <a href="{{ link.url }}" class="header__menu-item header__menu-item--sloe-fit list-menu__item link link--text focus-inset"{% if link.current %} aria-current="page"{% endif %}>
+                    {{ link.title | escape }}
+                  </a>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+
+      <div class="header__icons header__icons--sloe-fit">
+        <a href="{{ routes.search_url }}" class="header__icon header__icon--search link focus-inset" aria-label="{{ 'general.search.search' | t }}" style="color: rgba(255, 255, 255, 0.7);">
+          {% render 'icon-search' %}
+        </a>
+
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header__icon header__icon--account link focus-inset" aria-label="{{ 'customer.account_fallback' | t }}" style="color: rgba(255, 255, 255, 0.7);">
+            {% render 'icon-account' %}
+          </a>
+        {%- endif -%}
+
+        <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" aria-label="{{ 'templates.cart.cart' | t }}" id="cart-icon-bubble" style="color: rgba(255, 255, 255, 0.7);">
+          {% render 'icon-cart' %}
+          <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+          {%- if cart != empty -%}
+            <div class="cart-count-bubble">
+              {%- if cart.item_count < 100 -%}
+                <span aria-hidden="true">{{ cart.item_count }}</span>
+              {%- endif -%}
+              <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+            </div>
+          {%- endif -%}
+        </a>
+        <button class="header__mobile-menu-toggle" style="display: none; color: rgba(255, 255, 255, 0.7);" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 24px; height: 24px;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image",
+      "info": "Upload your store logo. Recommended size: 165px wide"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "default": 165,
+      "unit": "px",
+      "label": "Logo width",
+      "info": "Set the width of your logo in pixels"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Menu",
+      "info": "Select the navigation menu to display in the header"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "Accent 1"
+        },
+        {
+          "value": "accent-2",
+          "label": "Accent 2"
+        },
+        {
+          "value": "background-1",
+          "label": "Background 1"
+        },
+        {
+          "value": "background-2",
+          "label": "Background 2"
+        },
+        {
+          "value": "inverse",
+          "label": "Inverse"
+        }
+      ],
+      "default": "background-1",
+      "label": "Color scheme",
+      "info": "Choose a color scheme for the header background"
+    }
+  ]
+}
+{% endschema %}
+

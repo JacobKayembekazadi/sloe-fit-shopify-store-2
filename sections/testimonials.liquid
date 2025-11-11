@@ -1,0 +1,138 @@
+{%- comment -%}
+  Testimonials / Social Proof Section
+  Location: sections/testimonials.liquid
+  Purpose: Display customer testimonials and reviews
+{%- endcomment -%}
+
+<div class="testimonials">
+  <div class="page-width">
+    {%- if section.settings.title != blank -%}
+      <div class="testimonials__header">
+        <h2 class="testimonials__title brand-heading">
+          {{ section.settings.title | escape }}
+        </h2>
+      </div>
+    {%- endif -%}
+
+    <div class="testimonials__grid">
+      {%- for block in section.blocks -%}
+        <div class="testimonial" {{ block.shopify_attributes }}>
+          <div class="testimonial__stars">
+            {%- assign stars = block.settings.rating | default: 5 -%}
+            {%- for i in (1..5) -%}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="testimonial__star{% if i <= stars %} testimonial__star--filled{% endif %}">
+                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.27 1.13-1.03 1.99-2.063 1.439L12 18.29l-4.503 2.657c-1.033.55-2.333-.309-2.063-1.439l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.006Z" clip-rule="evenodd" />
+              </svg>
+            {%- endfor -%}
+          </div>
+          {%- if block.settings.quote != blank -%}
+            <blockquote class="testimonial__quote">
+              "{{ block.settings.quote }}"
+            </blockquote>
+          {%- endif -%}
+          <div class="testimonial__author">
+            {%- if block.settings.image != blank -%}
+              <img 
+                src="{{ block.settings.image | image_url: width: 100 }}"
+                alt="{{ block.settings.name | escape }}"
+                class="testimonial__author-image"
+                loading="lazy"
+              >
+            {%- endif -%}
+            <div class="testimonial__author-info">
+              <p class="testimonial__author-name">{{ block.settings.name | escape }}</p>
+              <p class="testimonial__author-badge">{{ block.settings.badge | default: "Verified Buyer" }}</p>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "DON'T JUST TAKE OUR WORD.",
+      "label": "Section title"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "The Sloe Fit Pre-Workout is the only one I've tried that gives me a clean boost with zero crash. Plus, I trust the ingredients."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Alex M."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Customer image"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5,
+          "label": "Rating"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge text",
+          "default": "Verified Buyer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The Sloe Fit Pre-Workout is the only one I've tried that gives me a clean boost with zero crash. Plus, I trust the ingredients.",
+            "name": "Alex M.",
+            "rating": 5
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "As a beginner, I was so lost. The 'Starter Stack' was perfect. I'm already seeing results and can't wait for the AI coach!",
+            "name": "Jessica L.",
+            "rating": 5
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Finally, a whey protein that mixes perfectly and doesn't taste artificial. The transparency is a game-changer. 10/10.",
+            "name": "David K.",
+            "rating": 5
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

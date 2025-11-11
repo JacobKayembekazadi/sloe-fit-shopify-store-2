@@ -1,0 +1,122 @@
+{%- comment -%}
+  Hero Section
+  Location: sections/hero.liquid
+  Purpose: Large banner/hero section for homepage or landing pages
+  This is a section file - it can be added/removed/reordered in the theme editor
+{%- endcomment -%}
+
+<div class="hero color-{{ section.settings.color_scheme }} gradient">
+  {%- if section.settings.image != blank -%}
+    <div class="hero__media media">
+      <img
+        srcset="{%- if section.settings.image.width >= 375 -%}{{ section.settings.image | image_url: width: 375 }} 375w,{%- endif -%}
+                {%- if section.settings.image.width >= 750 -%}{{ section.settings.image | image_url: width: 750 }} 750w,{%- endif -%}
+                {%- if section.settings.image.width >= 1100 -%}{{ section.settings.image | image_url: width: 1100 }} 1100w,{%- endif -%}
+                {%- if section.settings.image.width >= 1500 -%}{{ section.settings.image | image_url: width: 1500 }} 1500w,{%- endif -%}
+                {{ section.settings.image | image_url }} {{ section.settings.image.width }}w"
+        src="{{ section.settings.image | image_url: width: 1500 }}"
+        sizes="100vw"
+        alt="{{ section.settings.image.alt | escape }}"
+        loading="eager"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}"
+      >
+    </div>
+  {%- endif -%}
+  <div class="hero__content-overlay page-width">
+    <div class="hero__text-wrapper">
+      {%- if section.settings.heading != blank -%}
+        <h1 class="hero__heading h0">
+          {{ section.settings.heading | escape }}
+        </h1>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="hero__text rte">
+          {{ section.settings.text }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link }}" class="button hero__button">
+          {{ section.settings.button_label | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Upload a background image for the hero section. Recommended size: 1920x1080px"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Welcome to our store",
+      "label": "Heading",
+      "info": "Main headline text displayed on the hero"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "default": "<p>Tell your brand's story through images and text.</p>",
+      "label": "Description",
+      "info": "Supporting text displayed below the heading"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "Shop Now",
+      "label": "Button label",
+      "info": "Text displayed on the call-to-action button"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "URL where the button should link to (e.g., /collections/all)"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "Accent 1"
+        },
+        {
+          "value": "accent-2",
+          "label": "Accent 2"
+        },
+        {
+          "value": "background-1",
+          "label": "Background 1"
+        },
+        {
+          "value": "background-2",
+          "label": "Background 2"
+        },
+        {
+          "value": "inverse",
+          "label": "Inverse"
+        }
+      ],
+      "default": "background-1",
+      "label": "Color scheme",
+      "info": "Choose a color scheme for text and button colors"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}
+

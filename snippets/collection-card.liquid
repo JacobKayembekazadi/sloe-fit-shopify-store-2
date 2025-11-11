@@ -1,0 +1,49 @@
+{%- comment -%}
+  Collection Card Snippet
+  Location: snippets/collection-card.liquid
+  Purpose: Reusable collection card component for displaying collections in grids
+  This is a snippet file - reusable code that can be included in sections
+{%- endcomment -%}
+
+<div class="card-wrapper">
+  <div class="card card--{{ settings.card_style }} color-{{ settings.card_color_scheme }} gradient">
+    <div class="card__media">
+      <a href="{{ collection.url }}" class="card__link" aria-label="{{ collection.title | escape }}">
+        {%- if collection.featured_image != null -%}
+          <img
+            srcset="{%- if collection.featured_image.width >= 165 -%}{{ collection.featured_image | image_url: width: 165 }} 165w,{%- endif -%}
+                    {%- if collection.featured_image.width >= 360 -%}{{ collection.featured_image | image_url: width: 360 }} 360w,{%- endif -%}
+                    {%- if collection.featured_image.width >= 533 -%}{{ collection.featured_image | image_url: width: 533 }} 533w,{%- endif -%}
+                    {%- if collection.featured_image.width >= 720 -%}{{ collection.featured_image | image_url: width: 720 }} 720w,{%- endif -%}
+                    {{ collection.featured_image | image_url }} {{ collection.featured_image.width }}w"
+            src="{{ collection.featured_image | image_url: width: 533 }}"
+            sizes="(min-width: 990px) calc((100vw - 130px) / 3), (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 30px) / 2)"
+            alt="{{ collection.featured_image.alt | escape }}"
+            class="card__image"
+            loading="lazy"
+            width="{{ collection.featured_image.width }}"
+            height="{{ collection.featured_image.height }}"
+          >
+        {%- else -%}
+          {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </a>
+    </div>
+    <div class="card__content">
+      <div class="card__information">
+        <h3 class="card__heading">
+          <a href="{{ collection.url }}" class="full-unstyled-link">
+            {{ collection.title | escape }}
+          </a>
+        </h3>
+        {%- if collection.description != blank -%}
+          <div class="card__description rte">
+            {{ collection.description | strip_html | truncatewords: 15 }}
+          </div>
+        {%- endif -%}
+        <p class="card__product-count">{{ 'sections.collection_template.product_count' | t: count: collection.products_count }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,123 @@
+{%- comment -%}
+  Trust Badges Section (Why Sloe Fit)
+  Location: sections/trust-badges.liquid
+  Purpose: Display trust badges and key selling points
+{%- endcomment -%}
+
+<div class="trust-badges">
+  <div class="page-width">
+    <div class="trust-badges__header">
+      <h2 class="trust-badges__title brand-heading">
+        {{ section.settings.title | default: "FITNESS YOU CAN TRUST." | escape }}
+      </h2>
+      {%- if section.settings.description != blank -%}
+        <p class="trust-badges__description">
+          {{ section.settings.description }}
+        </p>
+      {%- endif -%}
+    </div>
+
+    <div class="trust-badges__grid">
+      {%- for block in section.blocks -%}
+        <div class="trust-badge" {{ block.shopify_attributes }}>
+          <div class="trust-badge__icon">
+            {%- if block.settings.icon_svg != blank -%}
+              {{ block.settings.icon_svg }}
+            {%- else -%}
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.616 2.39-1.59 3.055a8.217 8.217 0 01-6.22 1.44c-1.01.103-2.02.217-3.03.342a.74.74 0 01-.84-.84c.125-1.01.239-2.02.34-3.03.11-1.03-.02-2.12-.34-3.13a.74.74 0 01.84-.84c1.01.125 2.02.239 3.03.34 2.18.22 4.13.9 5.8 1.94a8.21 8.21 0 01.79 1.25Z" />
+              </svg>
+            {%- endif -%}
+          </div>
+          <div class="trust-badge__content">
+            <h3 class="trust-badge__title">{{ block.settings.title | escape }}</h3>
+            <p class="trust-badge__description">{{ block.settings.description }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Trust Badges",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "FITNESS YOU CAN TRUST.",
+      "label": "Section title"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "default": "We were tired of confusing labels and mystery ingredients. We're founded on transparency.",
+      "label": "Description"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Trust Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Third-Party Tested"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Every batch is tested for purity, potency, and safety."
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG",
+          "info": "Paste SVG code for the icon"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Badges",
+      "blocks": [
+        {
+          "type": "badge",
+          "settings": {
+            "title": "Third-Party Tested",
+            "description": "Every batch is tested for purity, potency, and safety."
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "title": "Transparently Sourced",
+            "description": "We show you exactly where our ingredients come from. No blends."
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "title": "No Banned Substances",
+            "description": "Certified safe for all athletes. Your health is our priority."
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "title": "Made in the USA",
+            "description": "All products are manufactured in a cGMP-certified facility in the USA."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

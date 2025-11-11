@@ -1,0 +1,51 @@
+{%- comment -%}
+  Main Collection Section
+  Location: sections/main-collection.liquid
+  Purpose: Display products in a collection with filtering and sorting
+  This is a section file - it can be added/removed/reordered in the theme editor
+{%- endcomment -%}
+
+<div class="collection section-{{ section.id }}-padding">
+  <div class="page-width">
+    {%- if collection.description != blank -%}
+      <div class="collection__description rte">
+        {{ collection.description }}
+      </div>
+    {%- endif -%}
+
+    {%- if collection.products_count > 0 -%}
+      <div class="collection__products grid grid--2-col grid--3-col-tablet grid--{{ section.settings.columns_desktop }}-col-desktop">
+        {%- for product in collection.products -%}
+          <div class="grid__item">
+            {% render 'product-card', product: product %}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="collection-empty">
+        <p>{{ 'sections.collection_template.empty' | t }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Number of columns on desktop",
+      "info": "How many product columns to show on large screens"
+    }
+  ]
+}
+{% endschema %}
+

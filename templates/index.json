@@ -1,0 +1,186 @@
+{
+  "sections": {
+    "announcement_bar": {
+      "type": "announcement-bar",
+      "settings": {
+        "show_announcement": true,
+        "announcement_text": "THE FUTURE OF FITNESS: Our AI Coach is coming. Sign up for early access."
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "hero": {
+      "type": "hero-sloe-fit",
+      "settings": {
+        "heading": "YOUR COMPLETE FITNESS ECOSYSTEM.",
+        "text": "Premium, trusted supplements and a personal AI coach. Stop guessing, start achieving.",
+        "button_label_1": "Shop The Starter Stack",
+        "button_link_1": "/collections/all",
+        "button_label_2": "Meet The AI Coach",
+        "button_link_2": "#"
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "THE FOUNDATION.",
+        "collection": "all",
+        "products_to_show": 3,
+        "columns_desktop": 3
+      }
+    },
+    "stack_builder": {
+      "type": "stack-builder",
+      "settings": {
+        "title": "FIND YOUR PERFECT STACK.",
+        "description": "The Sloe Fit AI Coach builds a plan unique to you. What are you training for?",
+        "show_waitlist_link": true
+      },
+      "blocks": {
+        "goal_1": {
+          "type": "goal",
+          "settings": {
+            "title": "Build Muscle",
+            "description": "Maximize strength and hypertrophy.",
+            "goal_id": "build_muscle",
+            "stack_title": "The Muscle Stack",
+            "products": ""
+          }
+        },
+        "goal_2": {
+          "type": "goal",
+          "settings": {
+            "title": "Lose Fat",
+            "description": "Sustainable caloric deficit and nutrition.",
+            "goal_id": "lose_fat",
+            "stack_title": "The Fat Loss Stack",
+            "products": ""
+          }
+        },
+        "goal_3": {
+          "type": "goal",
+          "settings": {
+            "title": "Increase Energy",
+            "description": "Optimize nutrition, sleep, and vitality.",
+            "goal_id": "increase_energy",
+            "stack_title": "The Energy Stack",
+            "products": ""
+          }
+        }
+      },
+      "block_order": [
+        "goal_1",
+        "goal_2",
+        "goal_3"
+      ]
+    },
+    "trust_badges": {
+      "type": "trust-badges",
+      "settings": {
+        "title": "FITNESS YOU CAN TRUST.",
+        "description": "We were tired of confusing labels and mystery ingredients. We're founded on transparency."
+      },
+      "blocks": {
+        "badge_1": {
+          "type": "badge",
+          "settings": {
+            "title": "Third-Party Tested",
+            "description": "Every batch is tested for purity, potency, and safety."
+          }
+        },
+        "badge_2": {
+          "type": "badge",
+          "settings": {
+            "title": "Transparently Sourced",
+            "description": "We show you exactly where our ingredients come from. No blends."
+          }
+        },
+        "badge_3": {
+          "type": "badge",
+          "settings": {
+            "title": "No Banned Substances",
+            "description": "Certified safe for all athletes. Your health is our priority."
+          }
+        },
+        "badge_4": {
+          "type": "badge",
+          "settings": {
+            "title": "Made in the USA",
+            "description": "All products are manufactured in a cGMP-certified facility in the USA."
+          }
+        }
+      },
+      "block_order": [
+        "badge_1",
+        "badge_2",
+        "badge_3",
+        "badge_4"
+      ]
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {
+        "title": "DON'T JUST TAKE OUR WORD."
+      },
+      "blocks": {
+        "testimonial_1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The Sloe Fit Pre-Workout is the only one I've tried that gives me a clean boost with zero crash. Plus, I trust the ingredients.",
+            "name": "Alex M.",
+            "rating": 5
+          }
+        },
+        "testimonial_2": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "As a beginner, I was so lost. The 'Starter Stack' was perfect. I'm already seeing results and can't wait for the AI coach!",
+            "name": "Jessica L.",
+            "rating": 5
+          }
+        },
+        "testimonial_3": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Finally, a whey protein that mixes perfectly and doesn't taste artificial. The transparency is a game-changer. 10/10.",
+            "name": "David K.",
+            "rating": 5
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_1",
+        "testimonial_2",
+        "testimonial_3"
+      ]
+    },
+    "value_offer_signup": {
+      "type": "value-offer-signup",
+      "settings": {
+        "title": "GET THE GUIDE.",
+        "description": "Join the list to get a free 5-day beginner's workout plan, 10% off your first order, and early access to the AI Coach.",
+        "button_label": "Get My Plan"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "show_social": true
+      }
+    }
+  },
+  "order": [
+    "announcement_bar",
+    "header",
+    "hero",
+    "featured_collection",
+    "stack_builder",
+    "trust_badges",
+    "testimonials",
+    "value_offer_signup",
+    "footer"
+  ]
+}
+

@@ -1,0 +1,28 @@
+# Shopify Theme Files to Ignore
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node modules (if using build tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment files
+.env
+.env.local
+
+# Build outputs
+dist/
+build/
+
+# SpecStory
+.specstory/
+

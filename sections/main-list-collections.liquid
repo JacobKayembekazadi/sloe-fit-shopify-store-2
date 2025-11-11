@@ -1,0 +1,44 @@
+{%- comment -%}
+  Main List Collections Section
+  Location: sections/main-list-collections.liquid
+  Purpose: Display all collections in a grid
+  This is a section file - it can be added/removed/reordered in the theme editor
+{%- endcomment -%}
+
+<div class="list-collections section-{{ section.id }}-padding">
+  <div class="page-width">
+    <h1 class="list-collections__title">
+      {{ 'sections.collection_list.title' | t }}
+    </h1>
+    <div class="grid grid--2-col grid--3-col-tablet grid--{{ section.settings.columns_desktop }}-col-desktop">
+      {%- for collection in collections -%}
+        {%- unless collection.handle == 'frontpage' -%}
+          <div class="grid__item">
+            {% render 'collection-card', collection: collection %}
+          </div>
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "List Collections",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "Number of columns on desktop",
+      "info": "How many collection columns to show on large screens"
+    }
+  ]
+}
+{% endschema %}
+

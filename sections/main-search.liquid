@@ -1,0 +1,58 @@
+{%- comment -%}
+  Main Search Section
+  Location: sections/main-search.liquid
+  Purpose: Display search results
+  This is a section file - it can be added/removed/reordered in the theme editor
+{%- endcomment -%}
+
+<div class="search section-{{ section.id }}-padding">
+  <div class="page-width">
+    <h1 class="search__title">
+      {%- if search.performed -%}
+        {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+      {%- else -%}
+        {{ 'general.search.title' | t }}
+      {%- endif -%}
+    </h1>
+
+    {%- if search.performed -%}
+      {%- if search.results_count > 0 -%}
+        <div class="search__results grid grid--2-col grid--3-col-tablet grid--{{ section.settings.columns_desktop }}-col-desktop">
+          {%- for item in search.results -%}
+            {%- case item.object_type -%}
+              {%- when 'product' -%}
+                <div class="grid__item">
+                  {% render 'product-card', product: item %}
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="search__no-results">
+          <p>{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Search",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Number of columns on desktop",
+      "info": "How many result columns to show on large screens"
+    }
+  ]
+}
+{% endschema %}
+

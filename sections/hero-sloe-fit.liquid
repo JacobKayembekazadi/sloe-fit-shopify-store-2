@@ -1,0 +1,114 @@
+{%- comment -%}
+  Hero Section - Sloe Fit Style
+  Location: sections/hero-sloe-fit.liquid
+  Purpose: Large hero banner with dark overlay and bold typography
+{%- endcomment -%}
+
+<div class="hero-sloe-fit">
+  {%- if section.settings.image != blank -%}
+    <div class="hero-sloe-fit__media">
+      <img
+        srcset="{%- if section.settings.image.width >= 375 -%}{{ section.settings.image | image_url: width: 375 }} 375w,{%- endif -%}
+                {%- if section.settings.image.width >= 750 -%}{{ section.settings.image | image_url: width: 750 }} 750w,{%- endif -%}
+                {%- if section.settings.image.width >= 1100 -%}{{ section.settings.image | image_url: width: 1100 }} 1100w,{%- endif -%}
+                {%- if section.settings.image.width >= 1500 -%}{{ section.settings.image | image_url: width: 1500 }} 1500w,{%- endif -%}
+                {%- if section.settings.image.width >= 1600 -%}{{ section.settings.image | image_url: width: 1600 }} 1600w,{%- endif -%}
+                {{ section.settings.image | image_url }} {{ section.settings.image.width }}w"
+        src="{{ section.settings.image | image_url: width: 1600 }}"
+        sizes="100vw"
+        alt="{{ section.settings.image.alt | escape }}"
+        loading="eager"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}"
+        class="hero-sloe-fit__image"
+      >
+      <div class="hero-sloe-fit__overlay"></div>
+    </div>
+  {%- endif -%}
+  
+  <div class="hero-sloe-fit__content page-width">
+    <div class="hero-sloe-fit__text-wrapper">
+      {%- if section.settings.heading != blank -%}
+        <h1 class="hero-sloe-fit__heading brand-heading">
+          {{ section.settings.heading | escape }}
+        </h1>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p class="hero-sloe-fit__text">
+          {{ section.settings.text }}
+        </p>
+      {%- endif -%}
+      {%- if section.settings.button_label_1 != blank or section.settings.button_label_2 != blank -%}
+        <div class="hero-sloe-fit__buttons">
+          {%- if section.settings.button_label_1 != blank -%}
+            <a href="{{ section.settings.button_link_1 }}" class="button button--sloe-fit button--primary">
+              {{ section.settings.button_label_1 | escape }}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.button_label_2 != blank -%}
+            <a href="{{ section.settings.button_link_2 }}" class="button button--sloe-fit button--secondary">
+              {{ section.settings.button_label_2 | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero - Sloe Fit",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image",
+      "info": "Upload a high-energy athlete image. Recommended size: 1600x900px"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "YOUR COMPLETE FITNESS ECOSYSTEM.",
+      "label": "Heading",
+      "info": "Main headline text (displayed in uppercase)"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "default": "Premium, trusted supplements and a personal AI coach. Stop guessing, start achieving.",
+      "label": "Description",
+      "info": "Supporting text displayed below the heading"
+    },
+    {
+      "type": "text",
+      "id": "button_label_1",
+      "default": "Shop The Starter Stack",
+      "label": "Primary button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link_1",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "default": "Meet The AI Coach",
+      "label": "Secondary button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Secondary button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero - Sloe Fit"
+    }
+  ]
+}
+{% endschema %}
+

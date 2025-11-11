@@ -1,0 +1,236 @@
+{%- comment -%}
+  Interactive Stack Builder Section
+  Location: sections/stack-builder.liquid
+  Purpose: AI-powered product stack recommendation tool
+{%- endcomment -%}
+
+<div class="stack-builder" id="stack-builder-{{ section.id }}">
+  <div class="page-width">
+    <div class="stack-builder__header">
+      <h2 class="stack-builder__title brand-heading">
+        {{ section.settings.title | default: "FIND YOUR PERFECT STACK." | escape }}
+      </h2>
+      {%- if section.settings.description != blank -%}
+        <p class="stack-builder__description">
+          {{ section.settings.description }}
+        </p>
+      {%- endif -%}
+    </div>
+
+    <div class="stack-builder__content">
+      <div class="stack-builder__goals">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'goal' -%}
+            <button 
+              class="stack-builder__goal{% if forloop.first %} stack-builder__goal--active{% endif %}"
+              data-goal-id="{{ block.settings.goal_id }}"
+              data-stack-title="{{ block.settings.stack_title }}"
+              data-products="{{ block.settings.products | escape }}"
+            >
+              <h3 class="stack-builder__goal-title brand-heading">{{ block.settings.title | escape }}</h3>
+              <p class="stack-builder__goal-description">{{ block.settings.description }}</p>
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="stack-builder__recommendation">
+        <div class="stack-builder__stack">
+          <h3 class="stack-builder__stack-title brand-heading" id="stack-title-{{ section.id }}">
+            {{ section.blocks.first.settings.stack_title | default: "The Muscle Stack" }}
+          </h3>
+          <p class="stack-builder__stack-subtitle">Your AI-recommended foundation:</p>
+          
+          <div class="stack-builder__products" id="stack-products-{{ section.id }}">
+            {%- assign first_goal = section.blocks.first -%}
+            {%- if first_goal.settings.products != blank -%}
+              {%- assign products_array = first_goal.settings.products | split: ',' -%}
+              {%- for product_handle in products_array -%}
+                {%- assign product = all_products[product_handle.strip] -%}
+                {%- if product != blank -%}
+                  <div class="stack-builder__product-item">
+                    {%- if product.featured_media != null -%}
+                      <img 
+                        src="{{ product.featured_media | image_url: width: 100 }}"
+                        alt="{{ product.title | escape }}"
+                        class="stack-builder__product-image"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                    <div class="stack-builder__product-info">
+                      <p class="stack-builder__product-name">{{ product.title }}</p>
+                      <p class="stack-builder__product-price">{{ product.price | money }}</p>
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+
+          <div class="stack-builder__footer">
+            <p class="stack-builder__total" id="stack-total-{{ section.id }}">Total: <span id="stack-total-amount-{{ section.id }}">$0.00</span></p>
+            <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="stack-builder__form">
+              <input type="hidden" name="items[]" id="stack-items-{{ section.id }}" value="">
+              <button type="submit" class="button button--sloe-fit button--primary">
+                Add Stack to Cart
+              </button>
+            </form>
+          </div>
+
+          {%- if section.settings.show_waitlist_link -%}
+            <p class="stack-builder__waitlist-text">
+              Want a full workout plan? <a href="#" class="stack-builder__waitlist-link" data-modal-trigger="waitlist-modal">Join the AI Coach waitlist.</a>
+            </p>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const stackBuilder = document.getElementById('stack-builder-{{ section.id }}');
+    if (!stackBuilder) return;
+
+    const goals = stackBuilder.querySelectorAll('.stack-builder__goal');
+    const stackTitle = document.getElementById('stack-title-{{ section.id }}');
+    const stackProducts = document.getElementById('stack-products-{{ section.id }}');
+    const stackTotal = document.getElementById('stack-total-amount-{{ section.id }}');
+    const stackItemsInput = document.getElementById('stack-items-{{ section.id }}');
+
+    goals.forEach(goal => {
+      goal.addEventListener('click', function() {
+        // Remove active class from all goals
+        goals.forEach(g => g.classList.remove('stack-builder__goal--active'));
+        // Add active class to clicked goal
+        this.classList.add('stack-builder__goal--active');
+
+        // Update stack title
+        if (stackTitle) {
+          stackTitle.textContent = this.dataset.stackTitle;
+        }
+
+        // Update products
+        if (stackProducts && this.dataset.products) {
+          const productHandles = this.dataset.products.split(',');
+          let html = '';
+          let total = 0;
+          let items = [];
+
+          productHandles.forEach(handle => {
+            handle = handle.trim();
+            {%- comment -%} This would need to be populated with actual product data via AJAX or Liquid {%- endcomment -%}
+            // For now, we'll use a placeholder approach
+          });
+
+          if (stackProducts) stackProducts.innerHTML = html;
+          if (stackTotal) stackTotal.textContent = '$' + total.toFixed(2);
+          if (stackItemsInput) stackItemsInput.value = JSON.stringify(items);
+        }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Stack Builder",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "FIND YOUR PERFECT STACK.",
+      "label": "Section title"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "default": "The Sloe Fit AI Coach builds a plan unique to you. What are you training for?",
+      "label": "Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_waitlist_link",
+      "default": true,
+      "label": "Show waitlist link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "goal",
+      "name": "Goal",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Goal title",
+          "default": "Build Muscle"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Goal description",
+          "default": "Maximize strength and hypertrophy."
+        },
+        {
+          "type": "text",
+          "id": "goal_id",
+          "label": "Goal ID",
+          "default": "build_muscle",
+          "info": "Unique identifier (e.g., build_muscle)"
+        },
+        {
+          "type": "text",
+          "id": "stack_title",
+          "label": "Stack title",
+          "default": "The Muscle Stack"
+        },
+        {
+          "type": "text",
+          "id": "products",
+          "label": "Product handles",
+          "info": "Comma-separated product handles (e.g., product-1,product-2)",
+          "default": ""
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stack Builder",
+      "blocks": [
+        {
+          "type": "goal",
+          "settings": {
+            "title": "Build Muscle",
+            "description": "Maximize strength and hypertrophy.",
+            "goal_id": "build_muscle",
+            "stack_title": "The Muscle Stack"
+          }
+        },
+        {
+          "type": "goal",
+          "settings": {
+            "title": "Lose Fat",
+            "description": "Sustainable caloric deficit and nutrition.",
+            "goal_id": "lose_fat",
+            "stack_title": "The Fat Loss Stack"
+          }
+        },
+        {
+          "type": "goal",
+          "settings": {
+            "title": "Increase Energy",
+            "description": "Optimize nutrition, sleep, and vitality.",
+            "goal_id": "increase_energy",
+            "stack_title": "The Energy Stack"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

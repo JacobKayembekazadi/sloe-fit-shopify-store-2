@@ -1,0 +1,27 @@
+{%- comment -%}
+  Main Page Section
+  Location: sections/main-page.liquid
+  Purpose: Display page content
+  This is a section file - it can be added/removed/reordered in the theme editor
+{%- endcomment -%}
+
+<div class="page section-{{ section.id }}-padding">
+  <div class="page-width">
+    <h1 class="page__title">
+      {{ page.title | escape }}
+    </h1>
+    <div class="rte">
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Page",
+  "tag": "section",
+  "class": "section",
+  "settings": []
+}
+{% endschema %}
+

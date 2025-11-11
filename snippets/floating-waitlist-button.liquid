@@ -1,0 +1,57 @@
+{%- comment -%}
+  Floating Waitlist Button
+  Location: snippets/floating-waitlist-button.liquid
+  Purpose: Floating CTA button for AI Coach waitlist
+{%- endcomment -%}
+
+<button class="floating-waitlist-button" data-modal-trigger="waitlist-modal" aria-label="Join AI Coach Waitlist">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="floating-waitlist-button__icon">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12.75H3m18 0h-1.5M12 18.75V21m-4.76-4.76-1.06-1.06M18.82 5.18l1.06 1.06M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 2.25V9m-.001-1.125A1.125 1.125 0 1 0 12 6.75a1.125 1.125 0 0 0 0 2.25Z" />
+  </svg>
+  <span class="floating-waitlist-button__text">AI Coach Waitlist</span>
+</button>
+
+<div class="waitlist-modal" id="waitlist-modal">
+  <div class="waitlist-modal__overlay"></div>
+  <div class="waitlist-modal__content">
+    <button class="waitlist-modal__close" aria-label="Close modal">&times;</button>
+    <h3 class="waitlist-modal__title brand-heading">JOIN THE WAITLIST</h3>
+    <p class="waitlist-modal__description">Be the first to get access to the Sloe Fit AI Coach and receive a free beginner's plan.</p>
+    {% form 'customer', class: 'waitlist-modal__form' %}
+      <input type="hidden" name="contact[tags]" value="waitlist">
+      <input 
+        type="email" 
+        name="contact[email]"
+        placeholder="Enter your email" 
+        class="waitlist-modal__input"
+        required
+      >
+      <button type="submit" class="button button--sloe-fit button--primary">
+        Sign Up
+      </button>
+    {% endform %}
+  </div>
+</div>
+
+<script>
+  (function() {
+    const triggers = document.querySelectorAll('[data-modal-trigger="waitlist-modal"]');
+    const modal = document.getElementById('waitlist-modal');
+    const closeBtn = modal?.querySelector('.waitlist-modal__close');
+    const overlay = modal?.querySelector('.waitlist-modal__overlay');
+
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        if (modal) modal.classList.add('waitlist-modal--active');
+      });
+    });
+
+    function closeModal() {
+      if (modal) modal.classList.remove('waitlist-modal--active');
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (overlay) overlay.addEventListener('click', closeModal);
+  })();
+</script>
+

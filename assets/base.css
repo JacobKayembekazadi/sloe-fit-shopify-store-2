@@ -1,0 +1,355 @@
+/* Base Styles for Shopify Theme */
+/* Location: assets/base.css */
+/* Purpose: Foundation CSS styles for the entire theme */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.8;
+  color: rgb(var(--color-base-text));
+  background-color: rgb(var(--color-base-background-1));
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  line-height: 1.2;
+}
+
+h1 { font-size: calc(var(--font-heading-scale) * 3.2rem); }
+h2 { font-size: calc(var(--font-heading-scale) * 2.4rem); }
+h3 { font-size: calc(var(--font-heading-scale) * 2rem); }
+h4 { font-size: calc(var(--font-heading-scale) * 1.8rem); }
+h5 { font-size: calc(var(--font-heading-scale) * 1.6rem); }
+h6 { font-size: calc(var(--font-heading-scale) * 1.4rem); }
+
+.h0 { font-size: calc(var(--font-heading-scale) * 4rem); }
+
+a {
+  color: rgb(var(--color-base-text));
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Layout */
+.page-width {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media screen and (min-width: 750px) {
+  .page-width {
+    padding: 0 5rem;
+  }
+}
+
+/* Grid System */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: calc(-1 * var(--grid-mobile-horizontal-spacing));
+  margin-bottom: calc(-1 * var(--grid-mobile-vertical-spacing));
+}
+
+.grid__item {
+  padding-left: var(--grid-mobile-horizontal-spacing);
+  padding-bottom: var(--grid-mobile-vertical-spacing);
+}
+
+@media screen and (min-width: 750px) {
+  .grid {
+    margin-left: calc(-1 * var(--grid-desktop-horizontal-spacing));
+    margin-bottom: calc(-1 * var(--grid-desktop-vertical-spacing));
+  }
+  
+  .grid__item {
+    padding-left: var(--grid-desktop-horizontal-spacing);
+    padding-bottom: var(--grid-desktop-vertical-spacing);
+  }
+}
+
+.grid--1-col .grid__item {
+  width: 100%;
+}
+
+.grid--2-col .grid__item {
+  width: calc(50% - var(--grid-mobile-horizontal-spacing));
+}
+
+@media screen and (min-width: 750px) {
+  .grid--2-col-tablet .grid__item {
+    width: calc(33.33% - var(--grid-desktop-horizontal-spacing));
+  }
+  
+  .grid--3-col-tablet .grid__item {
+    width: calc(33.33% - var(--grid-desktop-horizontal-spacing));
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .grid--4-col-desktop .grid__item {
+    width: calc(25% - var(--grid-desktop-horizontal-spacing));
+  }
+  
+  .grid--5-col-desktop .grid__item {
+    width: calc(20% - var(--grid-desktop-horizontal-spacing));
+  }
+}
+
+/* Buttons */
+.button {
+  display: inline-block;
+  padding: 1.2rem 2.4rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  border: var(--buttons-border-width) solid rgba(var(--color-base-outline-button-labels), var(--buttons-border-opacity));
+  border-radius: var(--buttons-radius);
+  background-color: rgb(var(--color-base-solid-button-labels));
+  color: rgb(var(--color-base-background-1));
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.button:hover {
+  opacity: 0.85;
+  text-decoration: none;
+}
+
+.button--primary {
+  background-color: rgb(var(--color-base-accent-1));
+  color: rgb(var(--color-base-solid-button-labels));
+}
+
+.button--full-width {
+  width: 100%;
+}
+
+/* Cards */
+.card {
+  position: relative;
+  border-radius: var(--product-card-corner-radius);
+  overflow: hidden;
+}
+
+.card__media {
+  position: relative;
+  overflow: hidden;
+}
+
+.card__image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.card__content {
+  padding: 1.5rem;
+}
+
+.card__heading {
+  margin: 0 0 1rem;
+  font-size: 1.6rem;
+}
+
+.card__price {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 0;
+}
+
+.header__heading-link {
+  display: block;
+}
+
+.header__heading-logo {
+  max-width: 100%;
+  height: auto;
+}
+
+.header__inline-menu {
+  display: none;
+}
+
+@media screen and (min-width: 990px) {
+  .header__inline-menu {
+    display: block;
+  }
+}
+
+.list-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 2rem;
+}
+
+.list-menu__item {
+  font-size: 1.4rem;
+}
+
+.header__icons {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.header__icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Footer */
+.footer {
+  padding: 4rem 0 2rem;
+  margin-top: 4rem;
+}
+
+.footer__content-top {
+  margin-bottom: 3rem;
+}
+
+.footer-block__heading {
+  margin: 0 0 1.5rem;
+  font-size: 1.6rem;
+}
+
+.footer__content-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(var(--color-base-text), 0.1);
+}
+
+.footer__social {
+  display: flex;
+  gap: 1rem;
+}
+
+.list-social__link {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  min-height: 50rem;
+  display: flex;
+  align-items: center;
+}
+
+.hero__media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero__content-overlay {
+  position: relative;
+  z-index: 1;
+  padding: 4rem 0;
+}
+
+.hero__text-wrapper {
+  max-width: 60rem;
+}
+
+.hero__heading {
+  margin-bottom: 2rem;
+  color: rgb(var(--color-base-background-1));
+}
+
+.hero__text {
+  margin-bottom: 2rem;
+  color: rgb(var(--color-base-background-1));
+}
+
+/* Utilities */
+.visually-hidden {
+  position: absolute !important;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  word-wrap: normal !important;
+}
+
+.skip-to-content-link {
+  position: absolute;
+  z-index: 9999;
+  padding: 1rem;
+  background: rgb(var(--color-base-background-1));
+  color: rgb(var(--color-base-text));
+  text-decoration: none;
+  transform: translateY(-100%);
+}
+
+.skip-to-content-link:focus {
+  transform: translateY(0);
+}
+
+.center {
+  text-align: center;
+}
+
+.rte {
+  line-height: 1.6;
+}
+
+.rte p {
+  margin: 0 0 1.5rem;
+}
+
+.rte a {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media screen and (min-width: 750px) {
+  html {
+    font-size: 62.5%;
+  }
+  
+  body {
+    font-size: 1.6rem;
+  }
+}
+

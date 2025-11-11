@@ -1,0 +1,44 @@
+{%- comment -%}
+  Announcement Bar Section
+  Location: sections/announcement-bar.liquid
+  Purpose: Top announcement banner for promotions or important messages
+{%- endcomment -%}
+
+{%- if section.settings.show_announcement -%}
+  <div class="announcement-bar" style="background-color: var(--brand-accent); color: var(--brand-dark);">
+    <div class="announcement-bar__content page-width">
+      <p class="announcement-bar__text">
+        {{ section.settings.announcement_text | escape }}
+      </p>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "class": "section-announcement-bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "default": true,
+      "label": "Show announcement bar",
+      "info": "Toggle the announcement bar on/off"
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "default": "THE FUTURE OF FITNESS: Our AI Coach is coming. Sign up for early access.",
+      "label": "Announcement text",
+      "info": "Text displayed in the announcement bar"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement Bar"
+    }
+  ]
+}
+{% endschema %}
+
