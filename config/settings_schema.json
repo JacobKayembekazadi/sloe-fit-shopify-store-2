@@ -3,7 +3,9 @@
     "name": "theme_info",
     "theme_name": "Sloefit Theme",
     "theme_version": "1.0.0",
-    "theme_author": "Your Name"
+    "theme_author": "Your Name",
+    "theme_documentation_url": "https://github.com/JacobKayembekazadi/sloe-fit-shopify-store-2",
+    "theme_support_email": "support@sloefit.com"
   },
   {
     "name": "Colors",
