@@ -78,7 +78,7 @@
             "description": "Optimize nutrition, sleep, and vitality.",
             "goal_id": "increase_energy",
             "stack_title": "The Energy Stack",
-            "collection": ""
+            "collection": "pieces-collection"
           }
         }
       },
