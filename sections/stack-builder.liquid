@@ -43,11 +43,14 @@
           
           <div class="stack-builder__products" id="stack-products-{{ section.id }}">
             {%- assign first_goal = section.blocks.first -%}
-            {%- if first_goal.settings.products != blank -%}
+            {%- assign any_rendered = false -%}
+            {%- if first_goal and first_goal.settings.products != blank -%}
               {%- assign products_array = first_goal.settings.products | split: ',' -%}
               {%- for product_handle in products_array -%}
-                {%- assign product = all_products[product_handle.strip] -%}
+                {%- assign handle = product_handle | strip -%}
+                {%- assign product = all_products[handle] -%}
                 {%- if product != blank -%}
+                  {%- assign any_rendered = true -%}
                   <div class="stack-builder__product-item">
                     {%- if product.featured_media != null -%}
                       <img 
@@ -65,6 +68,15 @@
                 {%- endif -%}
               {%- endfor -%}
             {%- endif -%}
+            {%- unless any_rendered -%}
+              <div class="stack-builder__product-item">
+                <div class="stack-builder__product-image" style="width:100px;height:100px;background:rgba(255,255,255,.06);border-radius:.4rem;"></div>
+                <div class="stack-builder__product-info">
+                  <p class="stack-builder__product-name">Add products to this goal</p>
+                  <p class="stack-builder__product-price">Use product handles in the section settings</p>
+                </div>
+              </div>
+            {%- endunless -%}
           </div>
 
           <div class="stack-builder__footer">
