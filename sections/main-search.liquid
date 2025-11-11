@@ -17,7 +17,7 @@
 
     {%- if search.performed -%}
       {%- if search.results_count > 0 -%}
-        <div class="search__results grid grid--2-col grid--3-col-tablet grid--{{ section.settings.columns_desktop }}-col-desktop">
+        <div class="search__results grid grid--1-col grid--2-col-tablet grid--{{ section.settings.columns_desktop }}-col-desktop">
           {%- for item in search.results -%}
             {%- case item.object_type -%}
               {%- when 'product' -%}

@@ -14,7 +14,7 @@
     {%- endif -%}
 
     {%- if collection.products_count > 0 -%}
-      <div class="collection__products grid grid--2-col grid--3-col-tablet grid--{{ section.settings.columns_desktop }}-col-desktop">
+      <div class="collection__products grid grid--1-col grid--2-col-tablet grid--{{ section.settings.columns_desktop }}-col-desktop">
         {%- for product in collection.products -%}
           <div class="grid__item">
             {% render 'product-card', product: product %}

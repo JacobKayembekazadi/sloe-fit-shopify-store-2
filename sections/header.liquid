@@ -94,6 +94,38 @@
       </div>
     </div>
   </div>
+
+  {%- if section.settings.menu != blank -%}
+    <div class="header__mobile-menu" aria-hidden="true">
+      <div class="header__mobile-menu__overlay"></div>
+      <nav class="header__mobile-menu__panel" role="dialog" aria-modal="true">
+        <div class="header__mobile-menu__header">
+          <span class="brand-heading">{{ shop.name | upcase }}</span>
+          <button class="header__mobile-menu__close" aria-label="Close menu">&times;</button>
+        </div>
+        <ul class="header__mobile-menu__list" role="list">
+          {%- for link in section.settings.menu.links -%}
+            <li>
+              <a href="{{ link.url }}" class="header__mobile-menu__link"{% if link.current %} aria-current="page"{% endif %}>
+                {{ link.title | escape }}
+              </a>
+              {%- if link.links != blank -%}
+                <ul class="header__mobile-menu__sublist" role="list">
+                  {%- for childlink in link.links -%}
+                    <li>
+                      <a href="{{ childlink.url }}" class="header__mobile-menu__sublink"{% if childlink.current %} aria-current="page"{% endif %}>
+                        {{ childlink.title | escape }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </div>
+  {%- endif -%}
 </header>
 
 {% schema %}

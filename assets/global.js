@@ -20,6 +20,9 @@ function initTheme() {
   
   // Initialize cart functionality
   initCart();
+
+  // Initialize mobile menu
+  initMobileMenu();
 }
 
 /**
@@ -142,4 +145,34 @@ window.theme = {
   updateAvailability,
   updateCartCount
 };
+
+/**
+ * Mobile menu functionality
+ */
+function initMobileMenu() {
+  const toggle = document.querySelector('.header__mobile-menu-toggle');
+  const menu = document.querySelector('.header__mobile-menu');
+  if (!toggle || !menu) return;
+
+  const panel = menu.querySelector('.header__mobile-menu__panel');
+  const overlay = menu.querySelector('.header__mobile-menu__overlay');
+  const closeBtn = menu.querySelector('.header__mobile-menu__close');
+
+  function openMenu() {
+    menu.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    menu.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  toggle.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  overlay?.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+}
 

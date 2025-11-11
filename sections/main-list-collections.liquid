@@ -10,7 +10,7 @@
     <h1 class="list-collections__title">
       {{ 'sections.collection_list.title' | t }}
     </h1>
-    <div class="grid grid--2-col grid--3-col-tablet grid--{{ section.settings.columns_desktop }}-col-desktop">
+    <div class="grid grid--1-col grid--2-col-tablet grid--{{ section.settings.columns_desktop }}-col-desktop">
       {%- for collection in collections -%}
         {%- unless collection.handle == 'frontpage' -%}
           <div class="grid__item">
