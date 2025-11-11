@@ -44,12 +44,10 @@
           <div class="stack-builder__products" id="stack-products-{{ section.id }}">
             {%- assign first_goal = section.blocks.first -%}
             {%- assign any_rendered = false -%}
-            {%- if first_goal and first_goal.settings.products != blank -%}
-              {%- assign products_array = first_goal.settings.products | split: ',' -%}
-              {%- for product_handle in products_array -%}
-                {%- assign handle = product_handle | strip -%}
-                {%- assign product = all_products[handle] -%}
-                {%- if product != blank -%}
+            {%- if first_goal and first_goal.settings.collection != blank -%}
+              {%- assign goal_collection = collections[first_goal.settings.collection] -%}
+              {%- if goal_collection != blank -%}
+                {%- for product in goal_collection.products limit: 6 -%}
                   {%- assign any_rendered = true -%}
                   <div class="stack-builder__product-item">
                     {%- if product.featured_media != null -%}
@@ -65,15 +63,15 @@
                       <p class="stack-builder__product-price">{{ product.price | money }}</p>
                     </div>
                   </div>
-                {%- endif -%}
-              {%- endfor -%}
+                {%- endfor -%}
+              {%- endif -%}
             {%- endif -%}
             {%- unless any_rendered -%}
               <div class="stack-builder__product-item">
                 <div class="stack-builder__product-image" style="width:100px;height:100px;background:rgba(255,255,255,.06);border-radius:.4rem;"></div>
                 <div class="stack-builder__product-info">
-                  <p class="stack-builder__product-name">Add products to this goal</p>
-                  <p class="stack-builder__product-price">Use product handles in the section settings</p>
+                  <p class="stack-builder__product-name">Select a collection for this goal</p>
+                  <p class="stack-builder__product-price">Choose a collection in the theme editor</p>
                 </div>
               </div>
             {%- endunless -%}
@@ -108,23 +106,23 @@
       "{{ block.settings.goal_id | default: 'goal_' | append: forloop.index }}": {
         "title": {{ block.settings.stack_title | default: 'Stack' | json }},
         "products": [
-          {%- assign handles = block.settings.products | default: '' | split: ',' -%}
-          {%- assign pfirst = true -%}
-          {%- for h in handles -%}
-            {%- assign handle = h | strip -%}
-            {%- assign p = all_products[handle] -%}
-            {%- if p -%}
-              {%- assign v = p.selected_or_first_available_variant -%}
-              {%- if pfirst == false -%},{%- endif -%}
-              {%- assign pfirst = false -%}
-              {
-                "variantId": {{ v.id | json }},
-                "priceCents": {{ v.price | times: 100 | divided_by: 100 | round: 0 }},
-                "title": {{ p.title | json }},
-                "image": {{ p.featured_media | image_url: width: 200 | json }}
-              }
+          {%- if block.settings.collection != blank -%}
+            {%- assign goal_collection = collections[block.settings.collection] -%}
+            {%- if goal_collection != blank -%}
+              {%- assign pfirst = true -%}
+              {%- for p in goal_collection.products limit: 6 -%}
+                {%- assign v = p.selected_or_first_available_variant -%}
+                {%- if pfirst == false -%},{%- endif -%}
+                {%- assign pfirst = false -%}
+                {
+                  "variantId": {{ v.id | json }},
+                  "priceCents": {{ v.price | times: 100 | divided_by: 100 | round: 0 }},
+                  "title": {{ p.title | json }},
+                  "image": {{ p.featured_media | image_url: width: 200 | json }}
+                }
+              {%- endfor -%}
             {%- endif -%}
-          {%- endfor -%}
+          {%- endif -%}
         ]
       }
     {%- endif -%}
@@ -306,11 +304,10 @@
           "default": "The Muscle Stack"
         },
         {
-          "type": "text",
-          "id": "products",
-          "label": "Product handles",
-          "info": "Comma-separated product handles (e.g., product-1,product-2)",
-          "default": "product-1"
+          "type": "collection",
+          "id": "collection",
+          "label": "Product Collection",
+          "info": "Select a collection - products will automatically populate from it (up to 6 products)"
         }
       ]
     }

@@ -58,7 +58,7 @@
             "description": "Maximize strength and hypertrophy.",
             "goal_id": "build_muscle",
             "stack_title": "The Muscle Stack",
-            "products": "Creatine,"
+            "collection": ""
           }
         },
         "goal_2": {
@@ -68,7 +68,7 @@
             "description": "Sustainable caloric deficit and nutrition.",
             "goal_id": "lose_fat",
             "stack_title": "The Fat Loss Stack",
-            "products": "https://admin.shopify.com/store/r2r1zh-jp/products/8603489534130 ,"
+            "collection": ""
           }
         },
         "goal_3": {
@@ -78,7 +78,7 @@
             "description": "Optimize nutrition, sleep, and vitality.",
             "goal_id": "increase_energy",
             "stack_title": "The Energy Stack",
-            "products": "8603489534130, 8586263101618"
+            "collection": ""
           }
         }
       },
