@@ -148,10 +148,14 @@
     
     let stackData = {};
     try {
-      stackData = dataEl ? JSON.parse(dataEl.textContent) : {};
+      const rawData = dataEl ? dataEl.textContent : '{}';
+      console.log('Raw stack data:', rawData);
+      stackData = JSON.parse(rawData);
       console.log('Stack data loaded:', stackData);
+      console.log('Available goal IDs:', Object.keys(stackData));
     } catch (e) {
       console.error('Failed to parse stack data:', e);
+      console.error('Raw content:', dataEl ? dataEl.textContent : 'no element');
     }
     
     const currencyCode = '{{ shop.currency }}';
@@ -204,14 +208,23 @@
     }
 
     goals.forEach((goal, index) => {
-      console.log(`Setting up goal ${index}:`, goal.dataset.goalId, goal);
+      console.log(`Setting up goal ${index}:`, {
+        goalId: goal.dataset.goalId,
+        stackTitle: goal.dataset.stackTitle,
+        collection: goal.dataset.collection,
+        element: goal
+      });
       goal.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('Goal clicked:', this.dataset.goalId, this);
+        console.log('=== Goal Clicked ===');
+        console.log('Clicked goal ID:', this.dataset.goalId);
+        console.log('Current goal ID before:', currentGoalId);
+        console.log('Data for this goal:', stackData[this.dataset.goalId]);
         goals.forEach(g => g.classList.remove('stack-builder__goal--active'));
         this.classList.add('stack-builder__goal--active');
         currentGoalId = this.dataset.goalId;
+        console.log('Current goal ID after:', currentGoalId);
         renderGoal(currentGoalId);
       });
     });
