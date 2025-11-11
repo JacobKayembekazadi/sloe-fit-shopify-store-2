@@ -22,6 +22,7 @@
         {%- for block in section.blocks -%}
           {%- if block.type == 'goal' -%}
             <button 
+              type="button"
               class="stack-builder__goal{% if forloop.first %} stack-builder__goal--active{% endif %}"
               data-goal-id="{{ block.settings.goal_id }}"
               data-stack-title="{{ block.settings.stack_title }}"
@@ -202,9 +203,12 @@
       if (stackTotal) stackTotal.textContent = formatMoneyFromCents(totalCents);
     }
 
-    goals.forEach(goal => {
-      goal.addEventListener('click', function() {
-        console.log('Goal clicked:', this.dataset.goalId);
+    goals.forEach((goal, index) => {
+      console.log(`Setting up goal ${index}:`, goal.dataset.goalId, goal);
+      goal.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Goal clicked:', this.dataset.goalId, this);
         goals.forEach(g => g.classList.remove('stack-builder__goal--active'));
         this.classList.add('stack-builder__goal--active');
         currentGoalId = this.dataset.goalId;

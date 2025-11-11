@@ -435,6 +435,11 @@
   text-align: left;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 100%;
+}
+
+.stack-builder__goal * {
+  pointer-events: none;
 }
 
 .stack-builder__goal:hover {
