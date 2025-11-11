@@ -135,7 +135,10 @@
 <script>
   (function() {
     const stackBuilder = document.getElementById('stack-builder-{{ section.id }}');
-    if (!stackBuilder) return;
+    if (!stackBuilder) {
+      console.warn('Stack builder element not found');
+      return;
+    }
 
     const goals = stackBuilder.querySelectorAll('.stack-builder__goal');
     const stackTitle = document.getElementById('stack-title-{{ section.id }}');
@@ -143,7 +146,15 @@
     const stackTotal = document.getElementById('stack-total-amount-{{ section.id }}');
     const addStackBtn = document.getElementById('add-stack-{{ section.id }}');
     const dataEl = document.getElementById('stack-data-{{ section.id }}');
-    const stackData = dataEl ? JSON.parse(dataEl.textContent) : {};
+    
+    let stackData = {};
+    try {
+      stackData = dataEl ? JSON.parse(dataEl.textContent) : {};
+      console.log('Stack data loaded:', stackData);
+    } catch (e) {
+      console.error('Failed to parse stack data:', e);
+    }
+    
     const currencyCode = '{{ shop.currency }}';
 
     // Determine default goal id
@@ -154,6 +165,7 @@
         // fall back to first key in data
         currentGoalId = Object.keys(stackData)[0] || null;
       }
+      console.log('Initial goal ID:', currentGoalId, 'Goals found:', goals.length);
     }
 
     function formatMoneyFromCents(cents) {
@@ -166,19 +178,26 @@
     }
 
     function renderGoal(goalId) {
+      console.log('Rendering goal:', goalId);
       const goal = stackData[goalId];
-      if (!goal) return;
+      if (!goal) {
+        console.warn('Goal not found in data:', goalId);
+        return;
+      }
+      console.log('Goal data:', goal);
       // Update title
       if (stackTitle) stackTitle.textContent = goal.title || '';
       // Render products
       let html = '';
       let totalCents = 0;
       if (Array.isArray(goal.products) && goal.products.length) {
+        console.log('Rendering', goal.products.length, 'products');
         goal.products.forEach((p) => {
           totalCents += (p.priceCents || 0);
           html += `\n<div class="stack-builder__product-item">\n  ${p.image ? `<img src="${p.image}" alt="${p.title || ''}" class="stack-builder__product-image" loading="lazy">` : ''}\n  <div class="stack-builder__product-info">\n    <p class="stack-builder__product-name">${p.title || ''}</p>\n    <p class="stack-builder__product-price">${formatMoneyFromCents(p.priceCents || 0)}</p>\n  </div>\n</div>`;
         });
       } else {
+        console.log('No products for this goal, showing placeholder');
         html = `\n<div class="stack-builder__product-item">\n  <div class="stack-builder__product-image" style="width:100px;height:100px;background:rgba(255,255,255,.06);border-radius:.4rem;"></div>\n  <div class="stack-builder__product-info">\n    <p class="stack-builder__product-name">Add products to this goal</p>\n    <p class="stack-builder__product-price">Use product handles in the section settings</p>\n  </div>\n</div>`;
       }
       if (stackProducts) stackProducts.innerHTML = html;
@@ -187,6 +206,7 @@
 
     goals.forEach(goal => {
       goal.addEventListener('click', function() {
+        console.log('Goal clicked:', this.dataset.goalId);
         goals.forEach(g => g.classList.remove('stack-builder__goal--active'));
         this.classList.add('stack-builder__goal--active');
         currentGoalId = this.dataset.goalId;
@@ -196,22 +216,31 @@
 
     addStackBtn && addStackBtn.addEventListener('click', async () => {
       const goal = stackData[currentGoalId];
-      if (!goal || !goal.products || !goal.products.length) return;
+      if (!goal || !goal.products || !goal.products.length) {
+        alert('No products configured for this goal. Please add product handles in the theme editor.');
+        return;
+      }
+      addStackBtn.disabled = true;
+      addStackBtn.textContent = 'Adding...';
       const items = goal.products.map(p => ({ id: p.variantId, quantity: 1 }));
       try {
-        const res = await fetch(window.routes.cart_add_url + '.js', {
+        const res = await fetch('{{ routes.cart_add_url }}.js', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ items })
         });
         if (res.ok) {
-          // Option: redirect to cart or update cart count
-          window.location.href = window.routes.cart_url;
+          window.location.href = '{{ routes.cart_url }}';
         } else {
-          alert('Unable to add items to cart.');
+          const data = await res.json();
+          alert(data.description || 'Unable to add items to cart.');
+          addStackBtn.disabled = false;
+          addStackBtn.textContent = 'Add Stack to Cart';
         }
       } catch (e) {
-        alert('Unable to add items to cart.');
+        alert('Unable to add items to cart: ' + e.message);
+        addStackBtn.disabled = false;
+        addStackBtn.textContent = 'Add Stack to Cart';
       }
     });
 
